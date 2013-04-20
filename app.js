@@ -10,9 +10,11 @@ function QuizPage(controller, word) {
     this._root.appendChild(this._word);
     this._timer = document.createElement('div');
     this._timer.className = 'timer';
-    this._timer.addEventListener('webkitAnimationEnd',
-        function() { controller.next(); }, false);
     this._root.appendChild(this._timer);
+
+    function next() { controller.next(); }; // Better to do controller.next.bind(controller); doesn't work on iOS 5.
+    this._timer.addEventListener('webkitAnimationEnd', next, false);
+    this._root.addEventListener('click', next, false);
 }
 QuizPage.prototype.element = function() { return this._root; }
 function shuffle(array) {
